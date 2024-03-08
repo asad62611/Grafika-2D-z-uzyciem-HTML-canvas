@@ -37,13 +37,57 @@
      */
     function draw() {
     
-        graphics.clearRect(0,0,600,600);
+
+		graphics.fillStyle = "blue";
+        graphics.lineWidth = 6; 
+        graphics.moveTo(292,500);
+        graphics.lineTo(470,305);
+        graphics.lineTo(305,100)
+        graphics.lineTo(130,295)
+		graphics.lineTo(295,500)
+        graphics.fill();
+        graphics.stroke();
         
-        // TODO: insert code to draw the image for Exercise 1!
-        graphics.fillRect(100,100,200,100);
-        graphics.strokeRect(100,100,300,200);
-        graphics.fillText("hello",50,50);
-        graphics.fillOval()
+        
+
+        graphics.fillStyle = "white";
+        graphics.fillCircle(230,260,25);
+        graphics.fillCircle(380,270,25);
+        
+
+        graphics.fillStyle = "black";
+        graphics.fillCircle(229,259,16);
+        graphics.fillCircle(378,269,16);
+
+        graphics.fillStyle = "white";
+        graphics.fillCircle(224,254,4);
+        graphics.fillCircle(374,264,4);
+		graphics.moveTo(374,264);
+        graphics.fillStyle = "black";
+        graphics.beginPath();
+        graphics.moveTo(250,355);
+        graphics.bezierCurveTo(265,405,325,410,350,360);
+        graphics.bezierCurveTo(345,370,250,370,250,355);
+		
+		graphics.moveTo(250,355);
+		graphics.lineTo(250,345);
+		graphics.moveTo(250,355);
+		graphics.lineTo(245,365);
+		
+		graphics.lineWidth = 2; 
+
+        graphics.fill();
+	
+		graphics.moveTo(350,360);
+		graphics.lineTo(350,350);
+		graphics.moveTo(350,360);
+		graphics.lineTo(355,370);
+		graphics.stroke();
+
+        graphics.fillStyle = "white";
+        graphics.fillRect(287,368,12,13);
+        graphics.fillRect(302,368,12,13);
+		
         
     } // end of draw()
     
