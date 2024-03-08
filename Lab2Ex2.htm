@@ -34,7 +34,8 @@
 
     var canvas;    // The canvas element on which we will draw.
     var graphics;  // A 2D graphics context for drawing on the canvas.
-    
+	var modstate = false;
+    var amod = 0;
     /**
      * This function returns a string representing a random RGB color.
      * The returned string can be assigned as the value of graphics.fillStyle
@@ -58,7 +59,7 @@
         var dragging = false;  // set to true when a drag action is in progress.
         var startX, startY;    // coordinates of mouse at start of drag.
         var prevX, prevY;      // previous mouse position during a drag.
-        
+        var prevA;
         var colorChoice;  // Integer code for the selected color in the "colorChoide"
                           // popup menu.  The value is assigned in doMouseDown.
         
@@ -99,7 +100,7 @@
             /*------------------------------------------------------------*/
             /* TODO: Add support for more drawing tools. */
             
-            if ( Math.abs(x-prevX) + Math.abs(y-prevY) < 3 ) {
+            if ( Math.abs(x-prevX) + Math.abs(y-prevY) < 100 ) {
                 return;  // don't draw squares too close together
             }
                 
@@ -115,13 +116,50 @@
             else if (colorChoice == 3) {
                 graphics.fillStyle = "blue";
             }
-            graphics.fillRect(x-20,y-20,40,40);
-            graphics.strokeRect(x-20,y-20,40,40);
-            
+			 else if (colorChoice == 4) {
+                graphics.fillStyle = "wheat";
+            }
+			graphics.beginPath();
+			
+			
+			var anglecount = document.getElementById("angleCountChoice").value; 
+			modstate = false;
+			if(anglecount == 0 ){
+				modstate = true;
+					if(prevA == undefined) anglecount = 3;
+					else anglecount = prevA;
+			} else modstate = false;
+			if(modstate == false) amod = 0;
+			
+			var sum = Number(anglecount) + Number(amod);
+			
+			
+			//pozycje wierzcholkow katow
+			for (var i = 0; i < sum; i++){
+
+				var angle = (2*Math.PI / sum * i);
+
+				var xx = x + 50 * Math.cos(angle);
+				var yy = y + 50 * Math.sin(angle);
+
+				if (i == 0) graphics.moveTo(xx, yy);
+				else graphics.lineTo(xx, yy);
+					
+			}
+
+			graphics.closePath();
+			graphics.fill();
+			graphics.stroke();
+			
             /*------------------------------------------------------------*/
             
             prevX = x;  // update prevX,prevY to prepare for next call to doMouseMove
             prevY = y;
+			if(modstate == true){
+			prevA = anglecount;
+			if(amod < 9) amod = amod+1;
+			else amod=0;
+			}
         }
         
         function doMouseUp(evt) {
@@ -244,7 +282,12 @@
         graphics.fillStyle = "white";
         graphics.fillRect(0,0,canvas.width,canvas.height);
     }
-    
+	
+	function cclear(){
+		graphics.fillStyle = "white";
+        graphics.fillRect(0,0,canvas.width,canvas.height);
+	}
+	
 </script>
 <link href="data:text/css,%3Ais(%5Bid*%3D'google_ads_iframe'%5D%2C%5Bid*%3D'taboola-'%5D%2C.taboolaHeight%2C.taboola-placeholder%2C%23credential_picker_container%2C%23credentials-picker-container%2C%23credential_picker_iframe%2C%5Bid*%3D'google-one-tap-iframe'%5D%2C%23google-one-tap-popup-container%2C.google-one-tap-modal-div%2C%23amp_floatingAdDiv%2C%23ez-content-blocker-container)%20%7Bdisplay%3Anone!important%3Bmin-height%3A0!important%3Bheight%3A0!important%3B%7D" rel="stylesheet" type="text/css"></head>
 <body onload="init()"> <!-- the onload attribute here is what calls the init() function -->
@@ -262,7 +305,18 @@
         <option value="1">Red</option>
         <option value="2">Green</option>
         <option value="3">Blue</option>
+		<option value="4">Pszenica</option>
     </select>
+	<b>Type:</b>
+	<select id="angleCountChoice">
+        <option value="4">Czworokat</option>
+		<option value="0">Szereg?</option>
+        <option value="13" selected="selected">13kat</option>
+    </select>
+	<p>
+		<input type="button" id="clear" onclick="cclear()" value="Clear"> 
+	</p>
+	
 </p>
 
 <div id="canvasholder">
